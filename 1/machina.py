@@ -15,12 +15,8 @@ def main():
 		arg = int(arg)
 		proga[i] = [ip, cop, arg]
 	pass
-
-def ukkom():
-	pass
-
-def regkom():
-	pass
+	COP = proga[i][1]
+	ADDR = proga[i][2]
 
 def dekkom(com):
 	hash(com)[3] = !ron
@@ -54,5 +50,11 @@ def alu(arg0, arg1):
 			return -1
 	pass
 
-(p, zapp, zapp1, vzap1, zam, op, pusk, chist, ron) = (0,0,0,0,0,0,0,0,0)
+def ukkom(adrcom):
+	if (pusk == 1):
+		ip = adrcom
+	return ip
+
+	
+(p, zapp, zapp1, vzap1, zam, op, pusk, chist, ron, ip, COP, ADDR) = (0,0,0,0,0,0,0,0,0,0, 0, 0)
 main()
