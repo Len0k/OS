@@ -2,7 +2,7 @@
 import sys
 
 def main():
-	proga = open(sys.argv[1]).read().split("\n")
+	proga = open(sys.argv[1]).read().split("\n")[:-1]
 	print proga
 	pass
 
