@@ -2,8 +2,13 @@
 import sys
 
 def main():
-	proga = open(sys.argv[1]).read().split("\n")[:-1]
-	print proga
+	proga = open(sys.argv[1]).read().split("\n")
+	for i in xrange(len(proga)):
+		(ip, com) = proga[i].split(":")
+		ip = int(ip)
+		(cop, arg) = com.split()
+		arg = int(arg)
+		proga[i] = [ip, cop, arg]
 	pass
 
 def ukkom():
