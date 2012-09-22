@@ -1,8 +1,8 @@
 #!/usr/bin/python
-import getopt
+import sys
 
 def main():
-	proga = open(sys.argv[1])
+	proga = open(sys.argv[1]).read().split("\n")
 	print proga
 	pass
 
