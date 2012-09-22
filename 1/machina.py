@@ -43,9 +43,15 @@ def dekkom(com):
 def alu(arg0, arg1):
 	switch op:
 		case 0:
-			pass
+			return arg0
 		case 1:
-			pass
+			return arg1
+		case 2:
+			return arg0 + arg1
+		case 3:
+			return arg1 - arg0
+		case 15:
+			return -1
 	pass
 
 (p, zapp, zapp1, vzap1, zam, op, pusk, chist, ron) = (0,0,0,0,0,0,0,0,0)
