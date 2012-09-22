@@ -38,7 +38,15 @@ def dekkom(com):
 	if (cop != 'FF'):
 		pusk = 1
 	vib = hash(com)[0]
-def alu():
+	if ()
+
+def alu(arg0, arg1):
+	switch op:
+		case 0:
+			pass
+		case 1:
+			pass
 	pass
 
+(p, zapp, zapp1, vzap1, zam, op, pusk, chist, ron) = (0,0,0,0,0,0,0,0,0)
 main()
