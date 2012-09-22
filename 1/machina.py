@@ -14,7 +14,6 @@ def main():
 		(cop, arg) = com.split()
 		arg = int(arg)
 		proga[i] = [ip, cop, arg]
-	pass
 	COP = proga[i][1]
 	ADDR = proga[i][2]
 
@@ -48,13 +47,13 @@ def alu(arg0, arg1):
 			return arg1 - arg0
 		case 15:
 			return -1
-	pass
 
 def ukkom(adrcom):
 	if (pusk == 1):
 		ip = adrcom
 	return ip
-
+def m(*args):
+	return args[args[-1]]
 	
 (p, zapp, zapp1, vzap1, zam, op, pusk, chist, ron, ip, COP, ADDR) = (0,0,0,0,0,0,0,0,0,0, 0, 0)
 main()
