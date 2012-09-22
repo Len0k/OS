@@ -1,20 +1,21 @@
 #!/usr/bin/python
 import getopt
 
-def main:
+def main():
 	proga = open(sys.argv[1])
 	print proga
 	pass
 
-def ukkom:
+def ukkom():
 	pass
 
-def regkom:
+def regkom():
 	pass
 
-def dekkom:
+def dekkom():
 	pass
 
-def alu:
+def alu():
 	pass
 
+main()
