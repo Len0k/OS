@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+
 hash = {'00': ["", 0, 0, 0], '11': [0, 1, 1, 0], '15': [1, 1 ,1 ,0],
 	'02': ["", 2, 0, 0], '21': [0, 1, 2, 0], '25': [1, 1, 2, 0],
 	'31': [0, 1, 3, 0], 'FE': ["", 4, 15, 1], 'F0': ["", 4, 15, 0],
@@ -14,16 +15,41 @@ def main():
 		(cop, arg) = com.split()
 		arg = int(arg)
 		proga[i] = [ip, cop, arg]
-	COP = proga[i][1]
-	ADDR = proga[i][2]
+	IP = 0
+	while (1):
+		COP = proga[IP][1]
+		ADDR = proga[IP][2]
+		dekkom(COP)
+		IA = t1 = IP + IR
+		t0 = proga[t1][2]
+		t2 = RVV
+		t1 = m(t0, t1, t2, vib)
+		t0 = RON
+		t0 = alu (t0, t1)
+		# IR
+		t = m(t0, 0, chist)
+		if (zam2 == 1):
+			IR = t
+		# RON
+		if (zam1 == 1):
+			RON = t0
+		# memory
+		if (zapp == 1):
+			proga[IP+IA][2] = t0
+		# next command
+		t = m(IP+1, IA, hash(COP)[3])
+		if (pusk == 1):
+			IP = t
+		else:
+			break
 
 def dekkom(com):
-	hash(com)[3] = !ron
+	hash(com)[3] = !RON
 	p = hash(com)[1]
 	if (p == 0):
 		zapp = 1
 	if (p == 1):
-		zapp1 = 1
+		zam1 = 1
 	if (p == 3):
 		vzap1 = 1
 	if (p != 3):
@@ -33,7 +59,6 @@ def dekkom(com):
 	if (cop != 'FF'):
 		pusk = 1
 	vib = hash(com)[0]
-	if ()
 
 def alu(arg0, arg1):
 	switch op:
@@ -56,5 +81,5 @@ def ukkom(adrcom):
 def m(*args):
 	return args[args[-1]]
 	
-(p, zapp, zapp1, vzap1, zam, op, pusk, chist, ron, ip, COP, ADDR) = (0,0,0,0,0,0,0,0,0,0, 0, 0)
+(p, zapp, zapp1, vzap1, zam1, op, pusk, chist, RON, IP, COP, ADDR) = (0,0,0,0,0,0,0,0,0,0, 0, 0)
 main()
