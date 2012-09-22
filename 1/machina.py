@@ -16,6 +16,8 @@ def main():
 		arg = int(arg)
 		proga[i] = [ip, cop, arg]
 	IP = 0
+	IR = 0
+	global RON
 	while (1):
 		COP = proga[IP][1]
 		ADDR = proga[IP][2]
@@ -37,15 +39,16 @@ def main():
 		if (zapp == 1):
 			proga[IP+IA][2] = t0
 		# next command
-		t = m(IP+1, IA, hash(COP)[3])
+		t = m(IP+1, IA, hash[COP][3])
 		if (pusk == 1):
 			IP = t
 		else:
 			break
 
 def dekkom(com):
-	hash(com)[3] = !RON
-	p = hash(com)[1]
+	global RON
+	hash[com][3] = 1 - RON
+	p = hash[com][1]
 	if (p == 0):
 		zapp = 1
 	if (p == 1):
@@ -54,24 +57,26 @@ def dekkom(com):
 		vzap1 = 1
 	if (p != 3):
 		zam2 = 1
-	if !(p == 2 or p ==3):
+	if not (p == 2 or p ==3):
 		chist = 1
-	if (cop != 'FF'):
+	if (com != 'FF'):
 		pusk = 1
-	vib = hash(com)[0]
+	vib = hash[com][0]
 
 def alu(arg0, arg1):
-	switch op:
-		case 0:
-			return arg0
-		case 1:
-			return arg1
-		case 2:
-			return arg0 + arg1
-		case 3:
-			return arg1 - arg0
-		case 15:
-			return -1
+	global COP
+	op = hash[COP][2]
+	#switch (op):
+	if (op == 0):
+		return arg0
+	if (op == 1):
+		return arg1
+	if (op == 2):
+		return arg0 + arg1
+	if (op == 3):
+		return arg1 - arg0
+	if (op == 15):
+		return -1
 	return -1
 
 def ukkom(adrcom):
@@ -81,5 +86,8 @@ def ukkom(adrcom):
 def m(*args):
 	return args[args[-1]]
 	
-(p, zapp, zapp1, vzap1, zam1, op, pusk, chist, RON, IP, COP, ADDR) = (0,0,0,0,0,0,0,0,0,0, 0, 0)
+(p, zapp, zapp1, vzap1, zam1, op, pusk, chist, RON, IP, ADDR, IR) = (0,0,0,0,0,0,0,0,0,0, 0, 0)
+RVV = 0
+vib = 0
+COP = ""
 main()
