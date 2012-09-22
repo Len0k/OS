@@ -47,6 +47,7 @@ def alu(arg0, arg1):
 			return arg1 - arg0
 		case 15:
 			return -1
+	return -1
 
 def ukkom(adrcom):
 	if (pusk == 1):
