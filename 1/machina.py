@@ -102,9 +102,9 @@ def setConstants():
 	global zapp, zam1, vzap1, zam2, chist, pusk, vib, com_table
 	num_hash = {'zapp' : 0, 'zam1' : 1, 'vzap1' : 2,
 		'zam2': 3, 'chist' : 4, 'pusk' : 5, 'vib' : 6}
-	if (len(sys.argv) > 2):
+	if len(sys.argv) > 2:
 		broken = sys.argv[2]
-		if broken in ('zapp', 'zam1', 'vzap1', 'zam2', 'chist', 'pusk', 'vib'):
+		if broken in num_hash.keys():
 			(zapp, zam1, vzap1, zam2, chist, pusk, vib)[num_hash[broken]] = 0
 
 
