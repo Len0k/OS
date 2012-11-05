@@ -58,7 +58,7 @@ LDFLAGS		+= -T $(LDSCRIPT) -shared -Bsymbolic -L../lib -L../gnuefi $(CRTOBJS)
 LOADLIBES	= -lefi -lgnuefi $(shell $(CC) $(ARCH3264) -print-libgcc-file-name)
 FORMAT		= efi-app-$(ARCH)
 
-TARGETS = hw.efi
+TARGETS = mem.efi
 
 all:	$(TARGETS)
 
