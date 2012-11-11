@@ -105,7 +105,9 @@ def setConstants():
 	if len(sys.argv) > 2:
 		broken = sys.argv[2]
 		if broken in num_hash.keys():
-			(zapp, zam1, vzap1, zam2, chist, pusk, vib)[num_hash[broken]] = 0
+			tmp_array = [zapp, zam1, vzap1, zam2, chist, pusk, vib]
+			tmp_array[num_hash[broken]] = 0
+			(zapp, zam1, vzap1, zam2, chist, pusk, vib) = tmp_array
 
 
 	
