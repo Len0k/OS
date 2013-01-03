@@ -1,70 +1,38 @@
-#
-#  Copyright (C) 1999-2001 Hewlett-Packard Co.
-#	Contributed by David Mosberger <davidm@hpl.hp.com>
-#	Contributed by Stephane Eranian <eranian@hpl.hp.com>
-#
-#    All rights reserved.
-#
-#    Redistribution and use in source and binary forms, with or without
-#    modification, are permitted provided that the following conditions
-#    are met:
-#
-#    * Redistributions of source code must retain the above copyright
-#      notice, this list of conditions and the following disclaimer.
-#    * Redistributions in binary form must reproduce the above
-#      copyright notice, this list of conditions and the following
-#      disclaimer in the documentation and/or other materials
-#      provided with the distribution.
-#    * Neither the name of Hewlett-Packard Co. nor the names of its
-#      contributors may be used to endorse or promote products derived
-#      from this software without specific prior written permission.
-#
-#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-#    CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-#    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-#    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-#    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
-#    BE LIABLE FOR ANYDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-#    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-#    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-#    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
-#    THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-#    SUCH DAMAGE.
-#
+ARCH		= $(shell uname -m | sed s,i[3456789]86,ia32,)
 
-SRCDIR = .
+EFI_INCLUDE	= /usr/include/efi
+EFI_INCLUDES	= -I$(EFI_INCLUDE) -I$(EFI_INCLUDE)/$(ARCH) -I$(EFI_INCLUDE)/protocol
+EFI_PATH	= /usr/lib
 
-VPATH = $(SRCDIR)
+LIB_GCC		= $(shell $(CC) -print-libgcc-file-name)
+EFI_LIBS	= -lefi -lgnuefi $(LIB_GCC)
 
-include $(SRCDIR)/Make.defaults
+EFI_CRT_OBJS 	= $(EFI_PATH)/crt0-efi-$(ARCH).o
+EFI_LDS		= $(EFI_PATH)/elf_$(ARCH)_efi.lds
 
-TOPDIR = $(SRCDIR)/..
 
-CDIR=$(TOPDIR)/..
-LINUX_HEADERS	= /usr/src/sys/build
-CPPFLAGS	+= -D__KERNEL__ -I$(LINUX_HEADERS)/include
-CRTOBJS		= ../gnuefi/crt0-efi-$(ARCH).o
-
-LDSCRIPT	= $(TOPDIR)/gnuefi/elf_$(ARCH)_efi.lds
+CFLAGS		= -O2 -fno-stack-protector -fno-strict-aliasing -fpic -fshort-wchar \
+		  -Wall -Werror \
+		  $(EFI_INCLUDES)
 ifeq ($(ARCH),x86_64)
- ifneq (,$(findstring FreeBSD,$(OS)))
-LDSCRIPT	= $(TOPDIR)/gnuefi/elf_$(ARCH)_fbsd_efi.lds
- endif
+	CFLAGS	+= -DEFI_FUNCTION_WRAPPER
 endif
+LDFLAGS		= -nostdlib -znocombreloc -T $(EFI_LDS) -shared -Bsymbolic -L$(EFI_PATH) $(EFI_CRT_OBJS)
 
-LDFLAGS		+= -T $(LDSCRIPT) -shared -Bsymbolic -L../lib -L../gnuefi $(CRTOBJS)
-LOADLIBES	= -lefi -lgnuefi $(shell $(CC) $(ARCH3264) -print-libgcc-file-name)
-FORMAT		= efi-app-$(ARCH)
+TARGET		= mem.efi
+OBJS		= mem.o
 
-TARGETS = mem.efi
+all: $(TARGET)
 
-all:	$(TARGETS)
+memory.efi: $(OBJS)
+
+%.efi: %.o 
+	$(LD) $(LDFLAGS) $^ -o $@ $(EFI_LIBS)
+	objcopy -j .text -j .sdata -j .data \
+		-j .dynamic -j .dynsym  -j .rel \
+		-j .rela -j .reloc \
+		--target=efi-app-$(ARCH) $@
+	strip $@
 
 clean:
-	rm -f $(TARGETS) *~ *.o *.so
-
-.PHONY: install
-
-include $(SRCDIR)/Make.rules
+	rm -f $(TARGET) $(OBJS)
