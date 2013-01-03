@@ -10,6 +10,10 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab) {
 
 	InitializeLib(image, systab);
 	res = uefi_call_wrapper(systab->BootServices->GetMemoryMap, 5, &N, NULL, NULL, NULL, NULL);
+	if (res != EFI_BUFFER_TOO_SMALL){
+		Print (L"Something wrong with your memory!\r\n");
+		return EFI_SUCCESS;
+	}
 	Print(L"Size required: %d\n\r", N);
 	res = uefi_call_wrapper(systab->BootServices->AllocatePool, 3, EfiLoaderData, N, &md);
 	if (res != EFI_SUCCESS){
@@ -86,21 +90,8 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab) {
 				totalEfiMaxMemoryType += (md[i].NumberOfPages << 12);
 		}
 	}
-	Print (L"Memory types sizes in Kilobytes:\n");
-	Print(L"totalEfiLoaderCode = %d\n", totalEfiLoaderCode);
-	Print(L"totalEfiLoaderData = %d\n", totalEfiLoaderData);
-	Print(L"totalEfiBootServicesCode = %d\n", totalEfiBootServicesCode);
-	Print(L"totalEfiBootServicesData = %d\n", totalEfiBootServicesData);
-	Print(L"totalEfiRuntimeServicesCode = %d\n", totalEfiRuntimeServicesCode);
-	Print(L"totalEfiRuntimeServicesData = %d\n", totalEfiRuntimeServicesData);
-	Print(L"totalEfiConventionalMemory = %d\n", totalEfiConventionalMemory);
-	Print(L"totalEfiUnusableMemory = %d\n", totalEfiUnusableMemory);
-	Print(L"totalEfiACPIReclaimMemory = %d\n", totalEfiACPIReclaimMemory);
-	Print(L"totalEfiACPIMemoryNVS = %d\n", totalEfiACPIMemoryNVS);
-	Print(L"totalEfiMemoryMappedIO = %d\n", totalEfiMemoryMappedIO);
-	Print(L"totalEfiMemoryMappedIOPortSpace = %d\n", totalEfiMemoryMappedIOPortSpace);
-	Print(L"totalEfiPalCode = %d\n", totalEfiPalCode);
-	Print(L"totalEfiMaxMemoryType = %d\n", totalEfiMaxMemoryType);
+	total = totalEfiBootServicesCode + totalEfiBootServicesData + totalEfiConventionalMemory;
+	Print(L"Total available memory size: %d Kilobytes\n", total);
 
 	uefi_call_wrapper(systab->BootServices->FreePool, 1, md);
 	return EFI_SUCCESS;
